@@ -1,4 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import "./App.css";
 import axios from "axios";
 
 function App() {
@@ -19,8 +21,8 @@ function App() {
                     keyword: keyword,
                 },
             );
-
-            setResult(response.data.script);
+            const res = JSON.parse(response.data.script);
+            setResult(res.script);
         } catch (error) {
             console.error("Lỗi gọi API:", error);
             alert("Có lỗi xảy ra, hãy check console!");
@@ -30,52 +32,24 @@ function App() {
     };
 
     return (
-        <div
-            style={{
-                maxWidth: "600px",
-                margin: "50px auto",
-                fontFamily: "sans-serif",
-            }}
-        >
-            <h2>🚀 AI Script Generator</h2>
-
-            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+        <div className="app-container">
+            <div className="title-container">
+                <h1>🚀 AI Script Generator</h1>
+            </div>
+            <div className="input-container">
                 <input
                     type="text"
+                    placeholder="Nhập từ khóa..."
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
-                    placeholder="Nhập chủ đề, VD: Nguồn gốc hố đen..."
-                    style={{ flex: 1, padding: "10px" }}
                 />
-                <button
-                    onClick={handleGenerate}
-                    disabled={loading}
-                    style={{ padding: "10px 20px", cursor: "pointer" }}
-                >
-                    {loading ? "Đang suy nghĩ..." : "Tạo Kịch Bản"}
+                <button onClick={handleGenerate} disabled={loading}>
+                    {loading ? "Đang tạo..." : "Tạo Script"}
                 </button>
             </div>
-
-            {result && (
-                <div
-                    style={{
-                        background: "#f4f4f4",
-                        padding: "15px",
-                        borderRadius: "8px",
-                        textAlign: "left",
-                    }}
-                >
-                    <h3>Kết quả:</h3>
-                    <pre
-                        style={{
-                            whiteSpace: "pre-wrap",
-                            wordWrap: "break-word",
-                        }}
-                    >
-                        {result}
-                    </pre>
-                </div>
-            )}
+            <div className="output-container">
+                <ReactMarkdown>{result}</ReactMarkdown>
+            </div>
         </div>
     );
 }
