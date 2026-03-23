@@ -1,0 +1,19 @@
+# 1. BẢO MẬT
+.env
+.env.*
+
+# 2. BACKEND (Python / FastAPI)
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# 3. FRONTEND (Node.js / React Vite)
+node_modules/
+dist/
+npm-debug.log*
+
+# 4. HỆ ĐIỀU HÀNH & TRÌNH BIÊN DỊCH
+.DS_Store
+.vscode/
+Thumbs.db
