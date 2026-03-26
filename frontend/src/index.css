@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+/* Định dạng cho Markdown */
+.markdown-content p {
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+    color: #374151;
+}
+.markdown-content strong {
+    color: #111827;
+    font-weight: 600;
+}
