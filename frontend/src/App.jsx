@@ -16,7 +16,7 @@ function App() {
 
         try {
             const response = await axios.post(
-                "http://127.0.0.1:8000/generate",
+                "https://ai-script-generate.onrender.com/generate",
                 {
                     keyword: keyword,
                 },
