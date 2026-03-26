@@ -19,13 +19,10 @@ def generate_script(keyword: str):
     Chủ đề của video là: {keyword}
     """
     
-    response = client.models.generate_content(
+    response = client.models.generate_content_stream(
         model="gemini-2.5-flash",
         contents=prompt,
-        config={
-            'response_mime_type': 'application/json',
-            'response_schema': ScriptResponse,
-        },
     )
     
-    return response.text
+    for chunk in response:
+        yield chunk.text

@@ -15,15 +15,34 @@ function App() {
         setResult(null);
 
         try {
-            const response = await axios.post(
+            // 1. Reset kết quả cũ về chuỗi rỗng để bắt đầu nối chữ
+            setResult("");
+
+            const response = await fetch(
                 "https://ai-script-generate.onrender.com/generate",
                 {
-                    keyword: keyword,
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ keyword: keyword }),
                 },
             );
-            // Ép kiểu JSON từ AI
-            const aiData = JSON.parse(response.data.script);
-            setResult(aiData.script);
+
+            // 2. Mở bộ đọc luồng (Stream Reader)
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder("utf-8");
+
+            // 3. Vòng lặp vô tận: Cứ có chữ mới là hốt vào
+            while (true) {
+                const { done, value } = await reader.read();
+
+                if (done) {
+                    break; // AI đã gõ xong, thoát vòng lặp
+                }
+
+                // Dịch cục dữ liệu thô thành chữ và nối vào State hiện tại
+                const chunk = decoder.decode(value, { stream: true });
+                setResult((prevText) => prevText + chunk);
+            }
         } catch (error) {
             console.error("Lỗi gọi API:", error);
             alert("Có lỗi xảy ra, hãy check console!");
